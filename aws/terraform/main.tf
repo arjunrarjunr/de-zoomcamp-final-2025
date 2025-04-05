@@ -10,6 +10,12 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
+# Create an ECR repository for the Lambda function
+# This repository will store the Docker image for the Lambda function
+# The image will be built from the Dockerfile in the specified GitHub repository
+# The image will be tagged with the latest version
+# The repository will be created with the specified name and tags
+# The image will be scanned for vulnerabilities on push
 resource "aws_ecr_repository" "my_ecr_repo" {
   name  = var.ingestion_image_name
   tags = {
@@ -21,7 +27,9 @@ resource "aws_ecr_repository" "my_ecr_repo" {
   image_scanning_configuration {
     scan_on_push = true
   }
-  force_delete = true
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_s3_bucket" "my_s3_bucket" {
@@ -31,9 +39,9 @@ resource "aws_s3_bucket" "my_s3_bucket" {
     Name        = var.s3_bucket_name
     Environment = "dev"
   }
-
-  force_destroy = true
-  
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 # IAM Role for Lambda
@@ -54,10 +62,9 @@ resource "aws_iam_role" "lambda_role" {
 EOF
 }
 
-# IAM Policy for Secrets Manager, S3, and Logging
 resource "aws_iam_policy" "lambda_policy" {
   name = "Lambda_KaggleHub_S3_Policy"
-
+  description = "Policy for Lambda to access Secrets Manager, S3, and CloudWatch Logs"
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -130,3 +137,8 @@ resource "aws_cloudwatch_event_target" "trigger_lambda" {
   target_id = "lambda"
   arn       = aws_lambda_function.my_lambda_function.arn
 }
+
+
+
+
+
