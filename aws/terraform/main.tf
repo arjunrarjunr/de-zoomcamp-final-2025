@@ -139,32 +139,49 @@ resource "aws_cloudwatch_event_target" "trigger_lambda" {
 }
 
 
-resource "aws_sns_topic" "snowpipe_trigger_weather_dataset_staging_topic" {
-  name = var.snowpipe_trigger_weather_dataset_staging_topic
+# Create SNS Topic
+resource "aws_sns_topic" "weather_dataset_stage_topic" {
+  name = "snowflake-stage-notifications"
   tags = {
-    Name        = var.snowpipe_trigger_weather_dataset_staging_topic
+    Name        = "snowflake-stage-notifications"
     Environment = "dev"
   }
-  # The topic is used to trigger the Snowpipe for the weather dataset
-  # The topic is created with the specified name and tags
 }
 
-resource "aws_sns_topic_policy" "weather_dataset_topic_policy" {
-  arn = aws_sns_topic.snowpipe_trigger_weather_dataset_staging_topic.arn
-  # The policy allows the Snowflake role to publish messages to the SNS topic
+# Create SQS Queue
+resource "aws_sqs_queue" "weather_dataset_stage_queue" {
+  name = "snowflake-stage-queue"
+  tags = {
+    Name        = "snowflake-stage-queue"
+    Environment = "dev"
+  }
+}
+
+# Subscribe SQS Queue to SNS Topic
+resource "aws_sns_topic_subscription" "weather_dataset_stage_subscription" {
+  topic_arn = aws_sns_topic.weather_dataset_stage_topic.arn
+  protocol  = "sqs"
+  endpoint  = aws_sqs_queue.weather_dataset_stage_queue.arn
+}
+
+# Allow SNS to send messages to SQS queue
+resource "aws_sqs_queue_policy" "weather_dataset_allow_sns_publish" {
+  queue_url = aws_sqs_queue.weather_dataset_stage_queue.id
+
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
+        Sid    = "Allow-SNS-SendMessage",
         Effect = "Allow",
         Principal = {
-          AWS = "*"
+          Service = "sns.amazonaws.com"
         },
-        Action   = "SNS:Publish",
-        Resource = aws_sns_topic.snowpipe_trigger_weather_dataset_staging_topic.arn,
+        Action   = "sqs:SendMessage",
+        Resource = aws_sqs_queue.weather_dataset_stage_queue.arn,
         Condition = {
-          ArnLike = {
-            "aws:SourceArn" = aws_s3_bucket.my_s3_bucket.arn
+          ArnEquals = {
+            "aws:SourceArn" = aws_sns_topic.weather_dataset_stage_topic.arn
           }
         }
       }
@@ -172,19 +189,19 @@ resource "aws_sns_topic_policy" "weather_dataset_topic_policy" {
   })
 }
 
-resource "aws_s3_bucket_notification" "s3_notification" {
-  bucket = aws_s3_bucket.my_s3_bucket.id
 
-  topic {
-    topic_arn = aws_sns_topic.snowpipe_trigger_weather_dataset_staging_topic.arn
-    events    = ["s3:ObjectCreated:*"]
+resource "aws_s3_bucket_notification" "weather_dataset_notification" {
+   bucket = aws_s3_bucket.my_s3_bucket.id
 
+  queue {
+    queue_arn     = aws_sqs_queue.weather_dataset_stage_queue.arn
+    events        = ["s3:ObjectCreated:*"]
+    filter_suffix = ".csv"
     filter_prefix = var.weather_dataset_prefix
   }
 
-  depends_on = [aws_sns_topic_policy.topic_policy, aws_s3_bucket.my_s3_bucket]
+  depends_on = [aws_sqs_queue_policy.weather_dataset_allow_sns_publish]
 }
-
 
 
 resource "aws_iam_role" "snowflake_role" {
