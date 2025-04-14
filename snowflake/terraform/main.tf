@@ -3,7 +3,8 @@
 terraform {
   required_providers {
     snowflake = {
-      source = "Snowflake-Labs/snowflake"
+      source  = "Snowflake-Labs/snowflake"
+      version = "~> 1.0.5"
     }
   }
 }
@@ -36,20 +37,8 @@ resource "snowflake_account_role" "data_engineer_role" {
   name    = "DATA_ENGINEER_ROLE"
   comment = "Role for data engineers"
 
+
 }
-
-
-resource "snowflake_grant_privileges_to_account_role" "weather_dataset_table_privileges" {
-  account_role_name = snowflake_account_role.data_engineer_role.name
-  on_schema {
-    schema_name = snowflake_schema.weather.fully_qualified_name
-  }
-  all_privileges    = true
-  with_grant_option = false
-}
-
-
-
 
 
 
@@ -66,6 +55,25 @@ resource "snowflake_warehouse" "data_engineer_warehouse" {
 
 }
 
+resource "snowflake_grant_privileges_to_account_role" "grant_data_engineer_role_kaggle_db" {
+  account_role_name = snowflake_account_role.data_engineer_role.fully_qualified_name
+  on_account_object {
+    object_type = "DATABASE"
+    object_name = snowflake_database.kaggle_datasets.name
+  }
+  all_privileges    = true
+  with_grant_option = false
+}
+
+resource "snowflake_grant_privileges_to_account_role" "weather_dataset_schema_privileges" {
+  account_role_name = snowflake_account_role.data_engineer_role.name
+  on_schema {
+    schema_name = snowflake_schema.weather.fully_qualified_name
+  }
+  all_privileges    = true
+  with_grant_option = false
+}
+
 
 
 resource "snowflake_user" "data_engineer" {
@@ -76,6 +84,20 @@ resource "snowflake_user" "data_engineer" {
   default_warehouse = snowflake_warehouse.data_engineer_warehouse.name
 }
 
+resource "snowflake_grant_account_role" "grant_data_engineer_role" {
+  role_name = snowflake_account_role.data_engineer_role.name
+  user_name = snowflake_user.data_engineer.name
+}
+
+resource "snowflake_grant_privileges_to_account_role" "grant_data_engineer_warehouse" {
+  privileges        = ["USAGE", "MONITOR", "OPERATE"]
+  account_role_name = snowflake_account_role.data_engineer_role.name
+  on_account_object {
+    object_type = "WAREHOUSE"
+    object_name = snowflake_warehouse.data_engineer_warehouse.fully_qualified_name
+  }
+}
+
 resource "snowflake_storage_integration" "s3_kaggle_weather_dataset_integration" {
   name                      = "S3_KAGGLE_WEATHER_DATASET_INTEGRATION"
   storage_provider          = "S3"
@@ -84,6 +106,15 @@ resource "snowflake_storage_integration" "s3_kaggle_weather_dataset_integration"
   storage_allowed_locations = ["s3://${var.kaggle_bucket_name}/${var.weather_dataset_prefix}"]
 }
 
+resource "snowflake_grant_privileges_to_account_role" "weather_dataset_integration_privileges" {
+  account_role_name = snowflake_account_role.data_engineer_role.name
+  on_account_object {
+    object_type = "INTEGRATION"
+    object_name = snowflake_storage_integration.s3_kaggle_weather_dataset_integration.fully_qualified_name
+  }
+  all_privileges    = true
+  with_grant_option = false
+}
 
 
 resource "snowflake_file_format" "weather_dataset_csv_format" {
@@ -95,6 +126,16 @@ resource "snowflake_file_format" "weather_dataset_csv_format" {
   skip_header     = 1
 }
 
+resource "snowflake_grant_privileges_to_account_role" "weather_dataset_file_format_privileges" {
+  account_role_name = snowflake_account_role.data_engineer_role.name
+  on_schema_object {
+    object_type = "FILE FORMAT"
+    object_name = snowflake_file_format.weather_dataset_csv_format.fully_qualified_name
+  }
+  all_privileges    = true
+  with_grant_option = false
+}
+
 resource "snowflake_stage" "weather_dataset_s3_stage" {
   name                = "WEATHER_DATASET_S3_STAGE"
   url                 = "s3://${var.kaggle_bucket_name}/${var.weather_dataset_prefix}"
@@ -104,6 +145,16 @@ resource "snowflake_stage" "weather_dataset_s3_stage" {
   database = snowflake_database.kaggle_datasets.name
   schema   = snowflake_schema.weather.name
   comment  = "Stage for weather datasets"
+}
+
+resource "snowflake_grant_privileges_to_account_role" "weather_dataset_stage_privileges" {
+  account_role_name = snowflake_account_role.data_engineer_role.name
+  on_schema_object {
+    object_type = "STAGE"
+    object_name = snowflake_stage.weather_dataset_s3_stage.fully_qualified_name
+  }
+  all_privileges    = true
+  with_grant_option = false
 }
 
 resource "snowflake_table" "weather_dataset_raw" {
@@ -318,6 +369,15 @@ resource "snowflake_table" "weather_dataset_raw" {
   }
 }
 
+resource "snowflake_grant_privileges_to_account_role" "weather_dataset_table_privileges" {
+  account_role_name = snowflake_account_role.data_engineer_role.name
+  on_schema_object {
+    object_type = "TABLE"
+    object_name = snowflake_table.weather_dataset_raw.fully_qualified_name
+  }
+  all_privileges    = true
+  with_grant_option = false
+}
 
 resource "snowflake_pipe" "weather_dataset_snowpipe" {
   name        = "WEATHER_DATASET_SNOWPIPE"
@@ -332,4 +392,14 @@ FILE_FORMAT = (FORMAT_NAME = '${snowflake_file_format.weather_dataset_csv_format
 EOT
 
 
+}
+
+resource "snowflake_grant_privileges_to_account_role" "weather_dataset_snowpipe_privileges" {
+  account_role_name = snowflake_account_role.data_engineer_role.name
+  on_schema_object {
+    object_type = "PIPE"
+    object_name = snowflake_pipe.weather_dataset_snowpipe.fully_qualified_name
+  }
+  all_privileges    = true
+  with_grant_option = false
 }

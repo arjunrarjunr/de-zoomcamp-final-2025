@@ -49,6 +49,11 @@ variable "snowflake_iam_user_arn" {
 }
 
 variable "snowflake_external_id" {
-  default = "RXB66470_SFCRole=61_j+SRNEMakR4t4mLFGYoLeQeb/fo="
+  default = "RXB66470_SFCRole=61_CgvfoZrCVM4mk0B2M4nbUT+8q4c="
 
+}
+
+variable "weather_dataset_sf_sqs_arn" {
+  default = "arn:aws:sqs:us-east-1:118006903233:sf-snowpipe-AIDARW6OCOHA7YUXDCSAW-DjjX4GJuviYfjxq6PalO0A"
+  
 }

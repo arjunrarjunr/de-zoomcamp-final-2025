@@ -15,8 +15,3 @@ variable "kaggle_bucket_name" {
   default = "de-zoomcamp-2025-kaggle-dataset-storage"
 
 }
-
-variable "weather_dataset_notification_topic_arn" {
-  default = "arn:aws:sns:us-east-1:314146310890:snowpipe_trigger_weather_dataset_staging_topic"
-
-}
