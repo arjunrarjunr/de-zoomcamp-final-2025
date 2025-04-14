@@ -42,3 +42,13 @@ variable "sf_s3_access_weather_dataset_access_role" {
 variable "snowpipe_trigger_weather_dataset_staging_topic" {
   default = "snowpipe_trigger_weather_dataset_staging_topic"
 }
+
+variable "snowflake_iam_user_arn" {
+  default = "arn:aws:iam::118006903233:user/zqry0000-s"
+
+}
+
+variable "snowflake_external_id" {
+  default = "RXB66470_SFCRole=61_j+SRNEMakR4t4mLFGYoLeQeb/fo="
+
+}

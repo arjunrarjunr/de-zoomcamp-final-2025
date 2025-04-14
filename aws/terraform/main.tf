@@ -190,19 +190,44 @@ resource "aws_sqs_queue_policy" "weather_dataset_allow_sns_publish" {
 }
 
 
+
+
 resource "aws_s3_bucket_notification" "weather_dataset_notification" {
-   bucket = aws_s3_bucket.my_s3_bucket.id
+  bucket = aws_s3_bucket.my_s3_bucket.id
 
-  queue {
-    queue_arn     = aws_sqs_queue.weather_dataset_stage_queue.arn
-    events        = ["s3:ObjectCreated:*"]
-    filter_suffix = ".csv"
+  topic {
+    topic_arn = aws_sns_topic.weather_dataset_stage_topic.arn
+    events    = ["s3:ObjectCreated:*"]
+
     filter_prefix = var.weather_dataset_prefix
+    filter_suffix = ".csv"
   }
+  depends_on = [ aws_sns_topic_policy.weather_dataset_topic_policy ]
 
-  depends_on = [aws_sqs_queue_policy.weather_dataset_allow_sns_publish]
 }
 
+resource "aws_sns_topic_policy" "weather_dataset_topic_policy" {
+   arn = aws_sns_topic.weather_dataset_stage_topic.arn
+
+   policy = jsonencode({
+     Version = "2012-10-17",
+     Statement = [
+       {
+         Effect = "Allow",
+         Principal = {
+           AWS = "*"
+         },
+         Action   = "SNS:Publish",
+         Resource = aws_sns_topic.weather_dataset_stage_topic.arn,
+         Condition = {
+           ArnLike = {
+             "aws:SourceArn" = aws_s3_bucket.my_s3_bucket.arn
+           }
+         }
+       }
+     ]
+   })
+ }
 
 resource "aws_iam_role" "snowflake_role" {
   name = "snowflake_s3_access_role"
@@ -213,12 +238,12 @@ resource "aws_iam_role" "snowflake_role" {
       {
         Effect = "Allow",
         Principal = {
-          AWS = "${var.snowflake_iam_user_arn}"  # This is the STORAGE_AWS_IAM_USER_ARN from Snowflake
+          AWS = "${var.snowflake_iam_user_arn}" # This is the STORAGE_AWS_IAM_USER_ARN from Snowflake
         },
         Action = "sts:AssumeRole",
         Condition = {
           StringEquals = {
-            "sts:ExternalId" = var.snowflake_external_id  # This is the STORAGE_AWS_EXTERNAL_ID from Snowflake
+            "sts:ExternalId" = var.snowflake_external_id # This is the STORAGE_AWS_EXTERNAL_ID from Snowflake
           }
         }
       }
