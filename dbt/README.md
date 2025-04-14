@@ -1,0 +1,1 @@
+##### Terraform not supported in trial
