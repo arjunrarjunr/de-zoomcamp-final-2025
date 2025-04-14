@@ -191,37 +191,60 @@ resource "aws_iam_role" "snowflake_role" {
   name = "snowflake_s3_access_role"
 
   assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
+    Version = "2012-10-17",
+    Statement = [
       {
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : "arn:aws:iam::118006903233:user/zqry0000-s"
+        Effect = "Allow",
+        Principal = {
+          AWS = "${var.snowflake_iam_user_arn}"  # This is the STORAGE_AWS_IAM_USER_ARN from Snowflake
         },
-        "Action" : "sts:AssumeRole"
+        Action = "sts:AssumeRole",
+        Condition = {
+          StringEquals = {
+            "sts:ExternalId" = var.snowflake_external_id  # This is the STORAGE_AWS_EXTERNAL_ID from Snowflake
+          }
+        }
       }
     ]
   })
 }
 
+
 resource "aws_iam_policy" "snowflake_s3_policy" {
   name        = "snowflake-s3-policy"
-  description = "Policy for Snowflake to access S3 bucket"
+  description = "Policy for Snowflake to access S3, SQS, and publish to SNS"
+
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
         Effect = "Allow",
-        Action = ["s3:GetObject", "s3:ListBucket"],
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ],
         Resource = [
-          aws_s3_bucket.my_s3_bucket.arn,
+          "${aws_s3_bucket.my_s3_bucket.arn}",
           "${aws_s3_bucket.my_s3_bucket.arn}/${var.weather_dataset_prefix}*"
         ]
       },
       {
-        Effect   = "Allow",
-        Action   = ["sns:Publish"],
-        Resource = aws_sns_topic.snowpipe_trigger_weather_dataset_staging_topic.arn
+        Effect = "Allow",
+        Action = ["sns:Publish"],
+        Resource = [
+          aws_sns_topic.weather_dataset_stage_topic.arn
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes"
+        ],
+        Resource = [
+          aws_sqs_queue.weather_dataset_stage_queue.arn
+        ]
       }
     ]
   })
@@ -230,27 +253,4 @@ resource "aws_iam_policy" "snowflake_s3_policy" {
 resource "aws_iam_role_policy_attachment" "attach_policy" {
   role       = aws_iam_role.snowflake_role.name
   policy_arn = aws_iam_policy.snowflake_s3_policy.arn
-}
-
-resource "aws_sns_topic_policy" "topic_policy" {
-  arn = aws_sns_topic.snowpipe_trigger_weather_dataset_staging_topic.arn
-  # The policy allows the Snowflake role to publish messages to the SNS topic
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          AWS = "*"
-        },
-        Action   = "SNS:Publish",
-        Resource = aws_sns_topic.snowpipe_trigger_weather_dataset_staging_topic.arn,
-        Condition = {
-          ArnLike = {
-            "aws:SourceArn" = aws_s3_bucket.my_s3_bucket.arn
-          }
-        }
-      }
-    ]
-  })
 }
