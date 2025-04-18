@@ -1,0 +1,92 @@
+version: 2
+
+sources:
+  - name: kaggle_datasets
+    database: KAGGLE_DATASETS
+    schema: WEATHER
+    tables:
+      - name: weather_dataset_raw
+        description: "Raw weather dataset table containing weather and air quality data"
+        columns:
+          - name: country
+            description: "Country name"
+          - name: location_name
+            description: "City or location name"
+          - name: latitude
+            description: "Latitude of the location"
+          - name: longitude
+            description: "Longitude of the location"
+          - name: timezone
+            description: "Timezone of the location"
+          - name: last_updated_epoch
+            description: "Last updated time in epoch format"
+          - name: last_updated
+            description: "Last updated time in human-readable format"
+          - name: temperature_celsius
+            description: "Temperature in Celsius"
+          - name: temperature_fahrenheit
+            description: "Temperature in Fahrenheit"
+          - name: condition_text
+            description: "Weather condition description"
+          - name: wind_mph
+            description: "Wind speed in miles per hour"
+          - name: wind_kph
+            description: "Wind speed in kilometers per hour"
+          - name: wind_degree
+            description: "Wind direction in degrees"
+          - name: wind_direction
+            description: "Wind direction as text"
+          - name: pressure_mb
+            description: "Pressure in millibars"
+          - name: pressure_in
+            description: "Pressure in inches"
+          - name: precip_mm
+            description: "Precipitation in millimeters"
+          - name: precip_in
+            description: "Precipitation in inches"
+          - name: humidity
+            description: "Humidity percentage"
+          - name: cloud
+            description: "Cloud cover percentage"
+          - name: feels_like_celsius
+            description: "Feels-like temperature in Celsius"
+          - name: feels_like_fahrenheit
+            description: "Feels-like temperature in Fahrenheit"
+          - name: visibility_km
+            description: "Visibility in kilometers"
+          - name: visibility_miles
+            description: "Visibility in miles"
+          - name: uv_index
+            description: "UV index"
+          - name: gust_mph
+            description: "Wind gust speed in miles per hour"
+          - name: gust_kph
+            description: "Wind gust speed in kilometers per hour"
+          - name: air_quality_carbon_monoxide
+            description: "Air quality: Carbon Monoxide (CO)"
+          - name: air_quality_ozone
+            description: "Air quality: Ozone (O3)"
+          - name: air_quality_nitrogen_dioxide
+            description: "Air quality: Nitrogen Dioxide (NO2)"
+          - name: air_quality_sulphur_dioxide
+            description: "Air quality: Sulphur Dioxide (SO2)"
+          - name: air_quality_pm2_5
+            description: "Air quality: Particulate Matter 2.5 (PM2.5)"
+          - name: air_quality_pm10
+            description: "Air quality: Particulate Matter 10 (PM10)"
+          - name: air_quality_us_epa_index
+            description: "Air quality index (US EPA)"
+          - name: air_quality_gb_defra_index
+            description: "Air quality index (GB DEFRA)"
+          - name: sunrise
+            description: "Sunrise time"
+          - name: sunset
+            description: "Sunset time"
+          - name: moonrise
+            description: "Moonrise time"
+          - name: moonset
+            description: "Moonset time"
+          - name: moon_phase
+            description: "Moon phase"
+          - name: moon_illumination
+            description: "Moon illumination percentage"
