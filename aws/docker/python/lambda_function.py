@@ -2,7 +2,7 @@ import os
 import boto3
 import zipfile
 import shutil
-
+from datetime import datetime
 
 # AWS Clients
 s3_client = boto3.client('s3')
@@ -47,14 +47,23 @@ def clean_non_csv_files(dataset_path):
 
 def upload_to_s3(dataset_path):
     clean_non_csv_files(dataset_path)
-    """Upload all dataset files to S3."""
+
+    current_date = datetime.now().strftime("%Y%m%d") 
+
     for root, _, files in os.walk(dataset_path):
         for file in files:
-            local_path = os.path.join(root, file)
-            s3_key = f"{S3_PREFIX}{file}"
+            if file.endswith(".csv"):
+                local_path = os.path.join(root, file)
 
-            s3_client.upload_file(local_path, S3_BUCKET, s3_key)
-            print(f"Uploaded {file} to s3://{S3_BUCKET}/{s3_key}")
+                # Split filename and extension
+                filename, ext = os.path.splitext(file)
+                renamed_file = f"{current_date}_{filename}{ext}" 
+
+                # S3 key with renamed file
+                s3_key = f"{S3_PREFIX}{renamed_file}"
+
+                s3_client.upload_file(local_path, S3_BUCKET, s3_key)
+                print(f"Uploaded {renamed_file} to s3://{S3_BUCKET}/{s3_key}")
 
 def lambda_handler(event, context):
     try:

@@ -49,7 +49,7 @@ variable "snowflake_iam_user_arn" {
 }
 
 variable "snowflake_external_id" {
-  default = "RXB66470_SFCRole=61_CgvfoZrCVM4mk0B2M4nbUT+8q4c="
+  default = "RXB66470_SFCRole=61_7HOGI2BFmRTtbri+9jPGnn8fJCM="
 
 }
 
