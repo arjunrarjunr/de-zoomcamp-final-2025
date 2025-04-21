@@ -1,0 +1,17 @@
+snapshots:
+- name: dim_country
+  relation: select * from {{ ref("eph_country_dim") }}
+  config:
+    database: 'kaggle_datasets'
+    schema: 'weather'
+    unique_key: 'country'
+    strategy: 'check'
+    invalidate_hard_deletes: False,
+    check_cols:
+    - 'country'
+    snapshot_meta_column_names:
+      dbt_valid_from: valid_from
+      dbt_valid_to: valid_to
+      dbt_scd_id: scd_id
+      dbt_updated_at: updated_at
+      dbt_is_deleted: is_deleted
