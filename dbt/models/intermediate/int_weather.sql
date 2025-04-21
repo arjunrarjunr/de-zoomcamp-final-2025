@@ -30,7 +30,33 @@ select
         then 'GUATEMALA'
         else country
     end as country,
-    city,
+    case
+        when
+            city
+            in ('火鸡', 'ТУРЦИЯ', 'ANKARA', 'KRASNYY TURKMENISTAN', '-KINGDOM', 'YAREN')
+        then 'ANKARA'
+        when city in ('CAIRO', 'القاهرة')
+        then 'CAIRO'
+        when city in ('北京', 'BEIJING SHI')
+        then 'BEIJING'
+        when city in ('SANTO DOMINGO', 'SANTO DOMINGO (D.N.)')
+        then 'SANTO DOMINGO'
+        when city in ('GUATEMALA CITY', 'NEW GUATEMALA')
+        then 'GUATEMALA CITY'
+        when city in ('ADDIS ABEBA', 'ADDIS ABABA')
+        then 'ADDIS ABABA'
+        when city in ('N''DJAMENA', 'NDJAMENA')
+        then 'NDJAMENA'
+        when city in ('SANAA', 'صنعاء')
+        then 'SANAA'
+        when city in ('VIENTIANE', 'เวียงจันทน์')
+        then 'VIENTIANE'
+        when city in ('TOKYO', '東京')
+        then 'TOKYO'
+        when city in ('BANGKOK', 'กรุงเทพมหานคร')
+        then 'BANGKOK'
+        else city
+    end as city,
     temperature,
     weather_condition,
     wind_speed,
