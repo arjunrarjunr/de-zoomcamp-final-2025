@@ -32,9 +32,9 @@ This DBT project processes and transforms raw weather data into clean, structure
 
 ```mermaid
 flowchart TD
-    A(Raw Data Source) --> B[stg_weather<br/>(Staging Model)<br/>- Data cleaning<br/>- Type casting<br/>- Surrogate key]
-    B --> C[int_weather<br/>(Intermediate Model)<br/>- Standardization<br/>- Deduplication]
-    C --> D[fct_weather<br/>(Fact Model)<br/>- Incremental load<br/>- Analytics-ready]
+    A[Raw Data Source] --> B[stg_weather --- (Staging Model) --- - Data cleaning --- - Type casting --- - Surrogate key]
+    B --> C[int_weather --- (Intermediate Model) --- - Standardization --- - Deduplication]
+    C --> D[fct_weather --- (Fact Model) --- - Incremental load --- - Analytics-ready]
 ```
 
 
