@@ -65,7 +65,7 @@ models:
         description: "Phase of the moon"
       - name: MOON_ILLUMINATION
         description: "Percentage of moon illumination"
-  - name: fct_mon_avg_weather
+  - name: mon_avg_weather
     description: >
       model materializes a finalized, structured table of monthly average weather and air quality metrics by country and city. 
       It selects cleaned and rounded data from the eph_mon_avg_rnd_weather model, 
