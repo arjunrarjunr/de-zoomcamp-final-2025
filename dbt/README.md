@@ -31,33 +31,22 @@ This DBT project processes and transforms raw weather data into clean, structure
 ## Block Diagram of Models
 
 ```mermaid
-flowchart TD
-    A[Raw Data Source] --> B[stg_weather]
-    B --> C[int_weather]
-    C --> D[fct_weather]
+sequenceDiagram
+    participant A as Raw Data Source
+    participant B as stg_weather (Staging Model)
+    participant C as int_weather (Intermediate Model)
+    participant D as fct_weather (Fact Model)
 
-    subgraph Staging Model
-        note1[Data cleaning]
-        note2[Type casting]
-        note3[Surrogate key]
-    end
-    subgraph Intermediate Model
-        note4[Standardization]
-        note5[Deduplication]
-    end
-    subgraph Fact Model
-        note6[Incremental load]
-        note7[Analytics-ready]
-    end
-
-    B --> note1
-    B --> note2
-    B --> note3
-    C --> note4
-    C --> note5
-    D --> note6
-    D --> note7
-
+    A->>B: Load raw data
+    B->>B: Data cleaning
+    B->>B: Type casting
+    B->>B: Surrogate key generation
+    B->>C: Send cleaned data
+    C->>C: Standardization
+    C->>C: Deduplication
+    C->>D: Send standardized data
+    D->>D: Incremental load
+    D->>D: Prepare analytics-ready data
 ```
 
 
