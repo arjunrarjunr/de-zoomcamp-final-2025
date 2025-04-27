@@ -97,6 +97,7 @@ sequenceDiagram
 - **Data Cleaning and Transformation**:
   - DBT ensures consistency in column names, data types, and value formats.
   - Deduplication and aggregation of weather data by month and region.
+  - Incremental load is done in final fact table to optimize performance and lower storage costs.
 
 - **Scalable, Cost-Effective Architecture**:
   - S3 + Snowflake enables elastic scalability and optimized query performance.
