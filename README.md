@@ -106,8 +106,8 @@ sequenceDiagram
 
 ---
 
-## **How to Run the Project**
-
+## **How to Run the Project (Reproducibility)**
+Detailed steps are present in README.md in all sub-directories.
 ### **1. Prerequisites**
 - AWS account with S3, Lambda, and IAM permissions.
 - Snowflake account with admin access for database and user management.
