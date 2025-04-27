@@ -45,7 +45,7 @@ This project implements a robust, cloud-native data pipeline to address these ch
    - Snowflake Snowpipe ingests raw data from S3 in near real-time.
    - DBT transforms and models the data into cleaned, aggregated tables.
 
-3. **Visualization**:
+3. [**Visualization**](https://github.com/arjunrarjunr/de-zoomcamp-final-2025/blob/main/snowflake/dashboard/README.md):
    - Snowflake Dashboards provide interactive insights into weather and air quality metrics.
 
 ---
@@ -101,7 +101,7 @@ sequenceDiagram
 - **Scalable, Cost-Effective Architecture**:
   - S3 + Snowflake enables elastic scalability and optimized query performance.
 
-- **Interactive Dashboards**:
+- [**Interactive Dashboards**](https://github.com/arjunrarjunr/de-zoomcamp-final-2025/blob/main/snowflake/dashboard/README.md):
   - Snowflake dashboards provide insights on temperature, precipitation, air quality, and extreme weather events.
 
 ---
