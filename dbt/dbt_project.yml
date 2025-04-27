@@ -42,4 +42,5 @@ models:
       +materialized: view
     intermediate:
       +materialized: table
-      
+    ephemeral:
+      +materialized: ephemeral
