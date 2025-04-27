@@ -1,3 +1,4 @@
+# [Prerequisites](https://github.com/arjunrarjunr/de-zoomcamp-final-2025/blob/dev/snowflake/terraform_admin/README.md)
 # Snowflake Terraform Workflow for Weather Data Pipeline
 
 This Terraform configuration provisions the Snowflake infrastructure required for the weather data pipeline. It automates the creation of databases, schemas, tables, stages, and Snowpipes to enable seamless data ingestion, processing, and analytics.
