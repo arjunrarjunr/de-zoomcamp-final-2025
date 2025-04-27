@@ -55,7 +55,7 @@ sequenceDiagram
     participant S3 as AWS S3 (Raw Data Storage)
     participant Snowpipe as Snowflake Snowpipe (Ingestion)
     participant DBT as DBT (Transformations)
-    participant Dashboard as Plotly Dashboards
+    participant Dashboard as Snowflake Dashboards
 
     Kaggle->>Lambda: Fetch Weather Data
     Lambda->>S3: Upload Data
@@ -80,7 +80,7 @@ sequenceDiagram
   - Uses AWS S3 for raw data storage and Snowflake for scalable querying.
 
 - **Interactive Dashboards**:
-  - Plotly dashboards visualize monthly weather trends and air quality metrics.
+  - Snowflake dashboards visualize monthly weather trends and air quality metrics.
 
 ---
 
@@ -104,7 +104,7 @@ sequenceDiagram
    - Run DBT models to transform raw data into analytics-ready tables.
 
 4. **Dashboard**:
-   - Use Plotly to create interactive dashboards for weather analysis.
+   - Use Snowflake to create interactive dashboards for weather analysis.
 
 ---
 
