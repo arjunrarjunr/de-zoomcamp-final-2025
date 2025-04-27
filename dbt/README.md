@@ -1,14 +1,3 @@
-Got it!  
-You have **two ephemeral models** now:  
-- `eph_mon_avg_weather` (monthly averages)  
-- `eph_mon_avg_rnd_weather` (rounding the monthly averages)  
-
-And your final table `mon_avg_weather` materializes the rounded result.
-
-Here’s your **full updated markdown**, cleanly integrating everything, including the second ephemeral model:
-
----
-
 # DBT Weather Data Pipeline
 
 This DBT project processes and transforms raw weather data into clean, structured, and analytics-ready tables. The pipeline is designed to handle data ingestion, cleaning, standardization, and aggregation for downstream analytics and reporting.
