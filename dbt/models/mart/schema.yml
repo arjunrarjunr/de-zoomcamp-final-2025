@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: fct_weather
+    description: "Fact historical model for weather data from Kaggle datasets"
+    columns:
+      - name: DATE
+        description: "Date of the weather data (converted from last updated timestamp)"
+      - name: COUNTRY
+        description: "Name of the country"
+      - name: TEMPERATURE
+        description: "Temperature in Celsius"
+      - name: WEATHER_CONDITION
+        description: "Description of the weather condition"
+      - name: WIND_SPEED
+        description: "Wind speed in kilometers per hour"
+      - name: WIND_DIRECTION
+        description: "Wind direction as text"
+      - name: PRESSURE
+        description: "Atmospheric pressure in millibars"
+      - name: PRECIPITATION
+        description: "Precipitation in millimeters"
+      - name: HUMIDITY
+        description: "Humidity percentage"
+      - name: CLOUD_COVER
+        description: "Cloud cover percentage"
+      - name: FEELS_LIKE
+        description: "Feels-like temperature in Celsius"
+      - name: VISIBILITY
+        description: "Visibility in kilometers"
+      - name: UV
+        description: "UV index"
+      - name: GUST
+        description: "Wind gust speed in kilometers per hour"
+      - name: AQ_CO
+        description: "Air quality: Carbon Monoxide (CO)"
+      - name: AQ_OZONE
+        description: "Air quality: Ozone (O3)"
+      - name: AQ_NO2
+        description: "Air quality: Nitrogen Dioxide (NO2)"
+      - name: AQ_SO2
+        description: "Air quality: Sulphur Dioxide (SO2)"
+      - name: AQ_PM2_5
+        description: "Air quality: Particulate Matter 2.5 (PM2.5)"
+      - name: AQ_PM10
+        description: "Air quality: Particulate Matter 10 (PM10)"
+      - name: AQ_US_EPA_INDEX
+        description: "Air quality index (US EPA)"
+      - name: AQ_GB_DEFRA_INDEX
+        description: "Air quality index (GB DEFRA)"
+      - name: SUNRISE_TIME
+        description: "Time of sunrise"
+      - name: SUNSET_TIME
+        description: "Time of sunset"
+      - name: MOONRISE_TIME
+        description: "Time of moonrise"
+      - name: MOONSET_TIME
+        description: "Time of moonset"
+      - name: MOON_PHASE
+        description: "Phase of the moon"
+      - name: MOON_ILLUMINATION
+        description: "Percentage of moon illumination"

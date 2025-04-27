@@ -1,0 +1,12 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='SURROGATE_KEY',
+        incremental_strategy='insert_overwrite',
+        on_schema_change='append_new_columns'
+    )
+}}
+select * from {{ ref('int_weather') }}
+{% if is_incremental() %}
+where date > (select max(date) from {{ this }})
+{% endif %}
