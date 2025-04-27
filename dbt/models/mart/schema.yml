@@ -1,22 +1,18 @@
 version: 2
 
 models:
-  - name: stg_weather
-    description: > 
-      Transforms raw weather data from Kaggle into a clean, 
-      standardized, and enriched staging table (stg_weather).
-      It performs essential data preparation steps such as type casting, 
-      renaming columns for clarity, formatting values, 
-      and generating surrogate keys for unique record identification. 
-      Additionally, it ranks records to support deduplication within each date, 
-      country, and city group.
+  - name: fct_weather
+    description: >
+      Fact table (fct_weather) that incrementally loads cleaned and 
+      standardized weather data from the intermediate model (int_weather). 
+      It ensures efficient data processing by inserting only new records based on the date and 
+      automatically adapting to schema changes. Serving as the final, analytics-ready repository, 
+      this fact table consolidates deduplicated weather data for downstream reporting and analysis.
     columns:
       - name: DATE
         description: "Date of the weather data (converted from last updated timestamp)"
       - name: COUNTRY
         description: "Name of the country"
-      - name: CITY
-        description: "City or location name"
       - name: TEMPERATURE
         description: "Temperature in Celsius"
       - name: WEATHER_CONDITION

@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: int_weather
+    description: >
+      Refines and standardizes weather data by transforming the staging table (stg_weather) into a clean, 
+      consistent intermediate table (int_weather). 
+      It maps multilingual and inconsistent country and city names to standardized English values, 
+      filters out duplicate records to retain only the most relevant entry for each date, 
+      country, and city, and selects key weather, air quality, and astronomical metrics. 
+      The resulting dataset ensures high-quality, deduplicated, and analytics-ready weather data for downstream use.
+    columns:
+      - name: rec_id
+        description: Unique surrogate key for each record, generated from date, country, and city.
+      - name: date
+        description: The date of the weather observation.
+      - name: country
+        description: Standardized country name.
+      - name: city
+        description: Standardized city name.
+      - name: temperature
+        description: Temperature in Celsius.
+      - name: weather_condition
+        description: Text description of the weather condition (e.g., sunny, cloudy).
+      - name: wind_speed
+        description: Wind speed in kilometers per hour.
+      - name: wind_direction
+        description: Direction of the wind.
+      - name: pressure
+        description: Atmospheric pressure in millibars.
+      - name: precipitation
+        description: Precipitation in millimeters.
+      - name: humidity
+        description: Humidity percentage.
+      - name: cloud_cover
+        description: Cloud cover percentage.
+      - name: feels_like
+        description: Feels-like temperature in Celsius.
+      - name: visibility
+        description: Visibility in kilometers.
+      - name: uv
+        description: UV index.
+      - name: gust
+        description: Wind gust speed in kilometers per hour.
+      - name: aq_co
+        description: Air quality measurement for carbon monoxide (CO).
+      - name: aq_ozone
+        description: Air quality measurement for ozone (O3).
+      - name: aq_no2
+        description: Air quality measurement for nitrogen dioxide (NO2).
+      - name: aq_so2
+        description: Air quality measurement for sulfur dioxide (SO2).
+      - name: aq_pm2_5
+        description: Air quality measurement for particulate matter (PM2.5).
+      - name: aq_pm10
+        description: Air quality measurement for particulate matter (PM10).
+      - name: aq_us_epa_index
+        description: Air quality index based on US EPA standards.
+      - name: aq_gb_defra_index
+        description: Air quality index based on GB DEFRA standards.
+      - name: sunrise_time
+        description: Time of sunrise.
+      - name: sunset_time
+        description: Time of sunset.
+      - name: moonrise_time
+        description: Time of moonrise.
+      - name: moonset_time
+        description: Time of moonset.
+      - name: moon_phase
+        description: Phase of the moon.
+      - name: moon_illumination
+        description: Percentage of moon illumination.
