@@ -90,3 +90,11 @@ sources:
             description: "Moon phase"
           - name: moon_illumination
             description: "Moon illumination percentage"
+        freshness: 
+          error_after:
+            count: 2
+            period: day
+          warn_after:
+            count: 1
+            period: day
+        
