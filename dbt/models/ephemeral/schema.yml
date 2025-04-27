@@ -56,8 +56,8 @@ models:
 
   - name: eph_mon_avg_rnd_weather
     description: >
-      Monthly average weather and air quality data by rounding all n
-      umeric metrics to two decimal places for consistency and readability. 
+      Monthly average weather and air quality data by rounding all numeric 
+      metrics to two decimal places for consistency and readability. 
       It selects key weather and environmental indicators for each country, 
       city, and month from the eph_mon_avg_weather model, preparing a clean, 
       presentation-ready dataset for reporting, dashboards, or further analysis
