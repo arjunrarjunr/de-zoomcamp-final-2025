@@ -1,7 +1,6 @@
 
-
 # 📊 Dashboard Documentation: **Monthly Average Weather Analysis**
-
+![alt text](image.png)
 ## Overview
 This dashboard provides a detailed visual analysis of **monthly average weather and air quality parameters** for a **selected city and country**.  
 It is designed to help users monitor and detect seasonal trends across a wide range of environmental factors.
