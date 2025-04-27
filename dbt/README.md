@@ -1,4 +1,4 @@
-##### Terraform not supported in trial
+
 
 # DBT Weather Data Pipeline
 
@@ -98,3 +98,5 @@ sequenceDiagram
 ---
 
 This pipeline ensures efficient and reliable processing of weather data, making it ready for advanced analytics and reporting.
+
+##### Terraform not supported in trial
