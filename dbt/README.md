@@ -1,5 +1,3 @@
-
-
 # DBT Weather Data Pipeline
 
 This DBT project processes and transforms raw weather data into clean, structured, and analytics-ready tables. The pipeline is designed to handle data ingestion, cleaning, standardization, and aggregation for downstream analytics and reporting.
@@ -26,6 +24,19 @@ This DBT project processes and transforms raw weather data into clean, structure
    - Incremental loading ensures only new or updated data is processed.
    - The fact table serves as the final dataset for analytics and reporting.
 
+5. **Ephemeral Model (`eph_mon_avg_weather`)**:
+   - Calculates the **monthly average** of key weather and air quality metrics.
+   - Uses window functions to compute averages partitioned by `country`, `city`, and `month`.
+   - Prepares summarized weather data for further transformation.
+
+6. **Ephemeral Model (`eph_mon_avg_rnd_weather`)**:
+   - Rounds the monthly average metrics from `eph_mon_avg_weather` to two decimal places.
+   - Ensures consistent and clean metric formatting before materialization.
+
+7. **Monthly Average Table (`mon_avg_weather`)**:
+   - Materializes the rounded monthly averages into a physical table.
+   - Provides a final, structured dataset ready for dashboards and reporting.
+
 ---
 
 ## Block Diagram of Models
@@ -36,6 +47,9 @@ sequenceDiagram
     participant B as stg_weather (Staging Model)
     participant C as int_weather (Intermediate Model)
     participant D as fct_weather (Fact Model)
+    participant E as eph_mon_avg_weather (Ephemeral Model)
+    participant F as eph_mon_avg_rnd_weather (Ephemeral Model)
+    participant G as mon_avg_weather (Monthly Average Table)
 
     A->>B: Load raw data
     B->>B: Data cleaning
@@ -47,9 +61,10 @@ sequenceDiagram
     C->>D: Send standardized data
     D->>D: Incremental load
     D->>D: Prepare analytics-ready data
+    D->>E: Calculate monthly averages
+    E->>F: Round the averages
+    F->>G: Materialize the rounded data
 ```
-
-
 
 ---
 
@@ -65,8 +80,14 @@ sequenceDiagram
 - **Incremental Loading**:
   - Optimizes performance by processing only new or updated data.
 
+- **Monthly Aggregations**:
+  - Provides monthly-level summaries of key weather and air quality metrics.
+
+- **Ephemeral Transformation**:
+  - Lightweight transformations (averaging and rounding) without persisting unnecessary intermediate tables.
+
 - **Analytics-Ready Data**:
-  - Provides a clean and structured dataset for downstream analytics and reporting.
+  - Final dataset prepared for dashboards, visualizations, and advanced analytics.
 
 ---
 
@@ -81,6 +102,9 @@ sequenceDiagram
      dbt run --select stg_weather
      dbt run --select int_weather
      dbt run --select fct_weather
+     dbt run --select eph_mon_avg_weather
+     dbt run --select eph_mon_avg_rnd_weather
+     dbt run --select mon_avg_weather
      ```
 
 3. **Test Models**:
@@ -97,6 +121,21 @@ sequenceDiagram
 
 ---
 
+## Model Summary Table
+
+| Model Name              | Materialization | Purpose |
+| ------------------------ | --------------- | ------- |
+| `stg_weather`            | View             | Clean and standardize raw data |
+| `int_weather`            | View             | Standardize names, deduplicate |
+| `fct_weather`            | Incremental Table| Final weather fact table |
+| `eph_mon_avg_weather`    | Ephemeral        | Calculate monthly averages |
+| `eph_mon_avg_rnd_weather`| Ephemeral        | Round monthly averages |
+| `mon_avg_weather`        | Table            | Materialized monthly average dataset |
+
+---
+
 This pipeline ensures efficient and reliable processing of weather data, making it ready for advanced analytics and reporting.
 
 ##### Terraform not supported in trial
+
+---

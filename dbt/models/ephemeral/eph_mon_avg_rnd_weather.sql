@@ -1,0 +1,25 @@
+select
+    country,
+    city,
+    month,
+    round(temperature, 2) as temperature,
+    round(pressure, 2) as pressure,
+    round(visibility, 2) as visibility,
+    round(wind_speed, 2) as wind_speed,
+    round(precipitation, 2) as precipitation,
+    round(humidity, 2) as humidity,
+    round(feels_like, 2) as feels_like,
+    round(cloud_cover, 2) as cloud_cover,
+    round(moon_illumination, 2) as moon_illumination,
+    round(uv, 2) as uv,
+    round(gust, 2) as gust,
+    round(aq_ozone, 2) as aq_ozone,
+    round(aq_us_epa_index, 2) as aq_us_epa_index,
+    round(aq_no2, 2) as aq_no2,
+    round(aq_pm2_5, 2) as aq_pm2_5,
+    round(aq_gb_defra_index, 2) as aq_gb_defra_index,
+    round(aq_pm10, 2) as aq_pm10,
+    round(aq_so2, 2) as aq_so2,
+    round(aq_co, 2) as aq_co
+from {{ ref("eph_mon_avg_weather") }}
+

@@ -1,0 +1,29 @@
+{{
+    config(
+        materialized='table'
+    )
+}}
+select
+    country,
+    city,
+    month,
+    temperature,
+    pressure,
+    visibility,
+    wind_speed,
+    precipitation,
+    humidity,
+    feels_like,
+    cloud_cover,
+    moon_illumination,
+    uv,
+    gust,
+    aq_ozone,
+    aq_us_epa_index,
+    aq_no2,
+    aq_pm2_5,
+    aq_gb_defra_index,
+    aq_pm10,
+    aq_so2,
+    aq_co
+from {{ ref("eph_mon_avg_rnd_weather") }}

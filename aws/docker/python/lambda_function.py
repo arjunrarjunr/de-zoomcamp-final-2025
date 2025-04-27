@@ -1,8 +1,32 @@
+"""
+This script is an AWS Lambda function designed to download a dataset from Kaggle, process it, and upload it to an S3 bucket.
+Modules:
+    - os: Provides functions to interact with the operating system.
+    - boto3: AWS SDK for Python to interact with AWS services.
+    - zipfile: Provides tools to work with ZIP archives.
+    - shutil: High-level file operations like copying and removal.
+    - datetime: Provides classes for manipulating dates and times.
+Functions:
+    - download_dataset(): Downloads a dataset from Kaggle using the Kaggle API, extracts it, and returns the path to the extracted files.
+    - clean_non_csv_files(dataset_path): Removes all non-CSV files from the specified dataset directory.
+    - upload_to_s3(dataset_path): Uploads CSV files from the dataset directory to an S3 bucket, renaming them with the current date as a prefix.
+    - lambda_handler(event, context): AWS Lambda entry point that orchestrates the dataset download, processing, and upload to S3.
+Constants:
+    - S3_BUCKET: Name of the S3 bucket where the dataset will be uploaded.
+    - KAGGLE_DATASET_LINK: URL to download the dataset from Kaggle.
+    - S3_PREFIX: Prefix for the S3 keys when uploading files.
+    - dataset_raw_path: Temporary path for storing the downloaded dataset.
+    - dataset_unzip_path: Temporary path for storing the extracted dataset.
+Usage:
+    This script is intended to be deployed as an AWS Lambda function. It downloads a dataset from Kaggle, processes it to retain only CSV files, and uploads the processed files to an S3 bucket with a date-prefixed filename.
+"""
 import os
 import boto3
 import zipfile
 import shutil
 from datetime import datetime
+
+
 
 # AWS Clients
 s3_client = boto3.client('s3')
