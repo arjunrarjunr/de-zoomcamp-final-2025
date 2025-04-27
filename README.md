@@ -33,6 +33,8 @@ This project implements a robust, cloud-native data pipeline to address these ch
 
 ## **Architecture**
 
+![alt text](image.png)
+
 ### **High-Level Workflow**
 
 1. **Data Ingestion**:
