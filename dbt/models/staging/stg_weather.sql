@@ -30,13 +30,12 @@ with
             "moonrise" as moonrise_time,
             "moonset" as moonset_time,
             "moon_phase" as moon_phase,
-            "moon_illumination" as moon_illumination,
-            "last_updated" as time_stamp
+            "moon_illumination" as moon_illumination
         from {{ source("kaggle_datasets", "weather_dataset_raw") }}
     )
 select
     {{ dbt_utils.generate_surrogate_key(["date", "country", "city"]) }}
-    as surrogate_key,
+    as rec_id,
     *,
     row_number() over (partition by date, country, city order by time) as row_number
 from rename_type_cast

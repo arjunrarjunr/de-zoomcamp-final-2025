@@ -1,5 +1,5 @@
 select
-    surrogate_key,
+    rec_id,
     date,
     case
         when country in ('BÉLGICA', 'BELGIQUE', 'BELGIEN')
@@ -82,7 +82,6 @@ select
     moonrise_time,
     moonset_time,
     moon_phase,
-    moon_illumination,
-    time_stamp
+    moon_illumination
 from {{ ref("stg_weather") }}
 where row_number = 1

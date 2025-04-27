@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental',
-        unique_key='SURROGATE_KEY',
+        unique_key='rec_id',
         incremental_strategy='insert_overwrite',
         on_schema_change='append_new_columns'
     )

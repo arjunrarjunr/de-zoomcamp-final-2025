@@ -8,6 +8,8 @@ models:
         description: "Date of the weather data (converted from last updated timestamp)"
       - name: COUNTRY
         description: "Name of the country"
+      - name: CITY
+        description: "City or location name"
       - name: TEMPERATURE
         description: "Temperature in Celsius"
       - name: WEATHER_CONDITION
