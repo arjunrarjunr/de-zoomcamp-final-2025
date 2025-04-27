@@ -21,7 +21,7 @@ The **Global Weather Repository** dataset, available on Kaggle, provides a wealt
 
 This project implements a robust, cloud-native data pipeline to address these challenges. Key components of the pipeline include:
 
-- **Automated Data Ingestion**: Fetches weather data from Kaggle and uploads it to an AWS S3 bucket.
+- **Automated Data Ingestion**: Fetches weather data from Kaggle and uploads it to an AWS S3 bucket triggerd daily 6AM IST by **AWS cloudwatch event rule**.
 - **Infrastructure as Code (IaC)**: Uses **Terraform** to provision AWS and Snowflake resources.
 - **Data Cleaning and Preprocessing**: Handles missing or inconsistent data to ensure high quality.
 - **Data Transformation**: Converts raw data into standardized, analytics-ready formats.
@@ -61,7 +61,7 @@ sequenceDiagram
     participant DBT as DBT (Transformations)
     participant Dashboard as Snowflake Dashboards
 
-    Kaggle->>Lambda: Fetch Weather Data
+    Kaggle->>Lambda: Fetch Weather Data - AWS cloudwatch event rule
     Lambda->>S3: Upload Data
     S3->>Snowpipe: Trigger Ingestion
     Snowpipe->>DBT: Transform Data
