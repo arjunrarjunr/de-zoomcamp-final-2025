@@ -2,7 +2,14 @@ version: 2
 
 models:
   - name: stg_weather
-    description: "Staging model for weather data from Kaggle datasets"
+    description: > 
+      Transforms raw weather data from Kaggle into a clean, 
+      standardized, and enriched staging table (stg_weather).
+      It performs essential data preparation steps such as type casting, 
+      renaming columns for clarity, formatting values, 
+      and generating surrogate keys for unique record identification. 
+      Additionally, it ranks records to support deduplication within each date, 
+      country, and city group.
     columns:
       - name: DATE
         description: "Date of the weather data (converted from last updated timestamp)"

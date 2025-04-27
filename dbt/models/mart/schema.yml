@@ -2,7 +2,12 @@ version: 2
 
 models:
   - name: fct_weather
-    description: "Fact historical model for weather data from Kaggle datasets"
+    description: >
+      Fact table (fct_weather) that incrementally loads cleaned and 
+      standardized weather data from the intermediate model (int_weather). 
+      It ensures efficient data processing by inserting only new records based on the date and 
+      automatically adapting to schema changes. Serving as the final, analytics-ready repository, 
+      this fact table consolidates deduplicated weather data for downstream reporting and analysis.
     columns:
       - name: DATE
         description: "Date of the weather data (converted from last updated timestamp)"
