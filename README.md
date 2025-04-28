@@ -26,6 +26,7 @@ This project implements a robust, cloud-native data pipeline to address these ch
 - **Data Cleaning and Preprocessing**: Handles missing or inconsistent data to ensure high quality.
 - **Data Transformation**: Converts raw data into standardized, analytics-ready formats.
 - **Data Integration**: Combines weather data with other potential datasets for deeper insights.
+- **Automated Pipeline**: Pipeline triggered by Schedule on DBT cloud everyday 8AM IST.
 - **Scalable Storage and Querying**: Leverages Snowflake for massive scalability and performance.
 - **Analytics-Ready Outputs**: Prepares data for dashboards, visualizations, and advanced modeling.
 
@@ -44,6 +45,7 @@ This project implements a robust, cloud-native data pipeline to address these ch
 2. **Data Processing**:
    - Snowflake Snowpipe ingests raw data from S3 in near real-time.
    - DBT transforms and models the data into cleaned, aggregated tables.
+   - Pipeline triggered by Schedule on DBT cloud everyday 8AM IST.
 
 3. [**Visualization**](https://github.com/arjunrarjunr/de-zoomcamp-final-2025/blob/main/snowflake/dashboard/README.md):
    - Snowflake Dashboards provide interactive insights into weather and air quality metrics.
@@ -75,7 +77,7 @@ sequenceDiagram
 - **AWS S3**: Scalable raw data storage.
 - **AWS Lambda**: Automated serverless ingestion from Kaggle.
 - **Snowflake**: Cloud-native data warehouse for storage and analytics.
-- **DBT**: Data transformation and modeling framework.
+- **DBT**: Data transformation and modeling framework. Pipeline triggered by Schedule on DBT cloud everyday 8AM IST.
 - **Terraform**: Infrastructure as Code (IaC) for AWS and Snowflake resource provisioning.
 - **Docker**: Local environment setup and reproducibility.
 - **Kaggle API**: Access to external weather datasets.
