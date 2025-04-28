@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         unique_key='rec_id',
-        incremental_strategy='insert_overwrite',
+        incremental_strategy='merge',
         on_schema_change='append_new_columns'
     )
 }}
