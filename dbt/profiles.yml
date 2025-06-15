@@ -1,0 +1,10 @@
+zoomcamp:
+    target: dev
+    outputs:
+        dev:
+            type: snowflake
+            role: ACCOUNTADMIN
+            database: DSC_PLBI_DB
+            schema: APP_ARD_DEV
+            warehouse: COMPUTE_WH
+            
